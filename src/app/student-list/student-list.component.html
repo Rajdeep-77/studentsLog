@@ -1,0 +1,70 @@
+<!-- <p>student-list works!</p>
+<ul *ngFor="let arr of studentData">
+    <li> {{ arr.enroll }} {{ arr.name }} {{ arr.email }} {{ arr.ph }} {{ arr.dob }} {{ arr.gender }} {{ arr.semester }} {{ arr.grade }}</li>
+</ul> -->
+
+
+<div>
+
+    <div class="input-group-prepend">
+        <label>Filter by grade:</label>
+    </div>
+    <select class="custom-select" (change)="onFilterGrade($event.target.value)">
+                <option value='All'>All</option>
+                <option *ngFor="let grade of ['A','B','C','D','E','F']" value="{{ grade }}">Grade: {{ grade }}</option>
+    </select>
+
+    <table class="storeTable table" id="myTable">
+        <thead>
+            <tr>
+                <th><b class="tableHeader">Enroll<br>
+                  <!-- <input type="number" name="enrollment"  [(ngModel)]="searchByEnroll" placeholder="search enrollment">-->
+                </b> </th>
+
+                <th (click)="sortTable(1)"><b class="tableHeader">Name<br>
+                  <!-- <input type="text" name="name" [(ngModel)]="searchByName" onkeydown="searchName()" placeholder="search name"> -->
+                    </b>
+                </th>
+
+                <th (click)="sortTable(2)"><b class="tableHeader">Email<br>
+                  <!-- <input type="text" name="email" [(ngModel)]="searchByEmail" onkeydown="searchEmail()" placeholder="search email"> -->
+                    </b>
+                </th>
+
+                <th><b class="tableHeader">Phone<br>
+                  <!-- <input type="number" name="phone" [(ngModel)]="searchByPhone" onkeydown="searchPhone()" placeholder="search phone number"> -->
+                    </b>
+                </th>
+
+                <th><b class="tableHeader">DoB</b></th>
+
+                <th><b class="tableHeader">Gender</b></th>
+
+                <th (click)="sortTable(6)"><b class="tableHeader">Semester</b></th>
+
+                <th (click)="sortTable(7)"><b class="tableHeader">Grade</b></th>
+
+                <th><b>Edit details</b></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <h4 *ngIf="(studentData.length==0)" class="emptyTableLine">No student found!</h4>
+            <tr *ngFor="let el of studentData | filter:searchByEnroll | filter:searchByName | filter:searchByEmail | filter:searchByPhone; let i=index">
+
+                <td>{{ el.enroll }}</td>
+                <td>{{ el.name }}</td>
+                <td>{{ el.email }}</td>
+                <td>{{ el.ph }}</td>
+                <td>{{ el.dob }}</td>
+                <td>{{ el.gender }}</td>
+                <td>{{ el.semester }}</td>
+                <td>{{ el.grade }}</td>
+                <td>
+                    <button id="editButton" class="btn btn-danger tableButton" (click)="onEdit(el)">Edit</button>
+                    <button id="deleteButton" class="btn btn-danger tableButton" (click)="onDelete(i)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

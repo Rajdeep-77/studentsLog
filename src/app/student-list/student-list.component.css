@@ -1,0 +1,14 @@
+.emptyTableLine {
+    margin-left: 400px;
+    margin-top: 10px;
+    width: max-content;
+    font-size: 40px;
+    position: absolute;
+    /* margin: auto; */
+}
+
+.tableButton {
+    margin-left: 7px;
+    width: 50px;
+    font-size: x-small;
+}

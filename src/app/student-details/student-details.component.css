@@ -1,0 +1,27 @@
+.form-control {
+    width: 340px;
+}
+
+.radioBtn {
+    margin-left: 5px;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+    border: 1px solid red;
+}
+
+.dropdownSelector {
+    margin-left: 5px;
+}
+
+.subInputFiled {
+    width: 150px;
+    margin-top: 10px;
+}
+
+.marksInputFiled {
+    width: 100px;
+    margin-left: 40px;
+    margin-top: 10px;
+}

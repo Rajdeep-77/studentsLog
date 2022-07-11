@@ -1,0 +1,84 @@
+<div class="container row">
+    <div class="col-md-6"><br><br>
+        <h2>Student's entry: </h2>
+        <hr>
+        <div class="col-xs-12 col-sm-10 col-md-8">
+
+            <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-group">
+                    <label for="name">Name: </label>
+                    <input id="name" formControlName="name" type="text" class="form-control" placeholder="Student name" pattern="[a-z] || [A-z]">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="email">Email: </label>
+                    <input id="email" formControlName="email" type="email" class="form-control" pattern="[A-Za-z0-9]+[^ @]*@[^ @]*\.[A-Za-z0-9]+" placeholder="example@gmail.com">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="phNum">Ph Number: </label>
+                    <select class="custom-select dropdownSelector" name="region" (change)="onRegionSelected($event.target.value)">
+                      <option value="india" >India (+91): </option>
+                      <option value="usa">Usa (+1): </option>
+                    </select>
+                    <input id="phNum" formControlName="ph" type="number" min="0" onkeydown="if(['Space'].includes(arguments[0].code)){return false;}" placeholder="phone number" class="form-control">
+                </div><br>
+
+                <div class="form-group">
+                    <label for="dob">DoB: </label>
+                    <input id="dob" class="form-control" formControlName="dob" type="date">
+                </div><br>
+
+                <div>
+                    <label>Gender:</label>
+                    <input class="radioBtn" type="radio" formControlName="gender" value="male"> male
+                    <input class="radioBtn" type="radio" formControlName="gender" value="female"> female
+                </div><br>
+
+                <div>
+                    <label>Semester: </label>
+                    <select class="custom-select dropdownSelector" formControlName="semester">
+                        <option value=null >Select semester</option>
+                        <option *ngFor="let number of [1,2,3,4,5,6,7,8]" value="{{ number }}">Sem: {{ number }}</option>
+                    </select>
+                </div><br>
+
+                <div>
+                    <label>Subjects: </label>
+                    <select class="custom-select dropdownSelector" formControlName="subjectNum" (change)="onAddSubject($event.target.value)">
+                <option value=null >Select subject</option>
+                <option *ngFor="let num of [1,2,3]" value="{{ num }}">{{ num==1 ? 'One':( num==2 ? 'Two':'Three') }}</option>
+            </select>
+                </div><br>
+
+                <div class="row">
+                    <div class="col-12" formArrayName="subjectArray">
+                        <div class="row form-group" *ngFor="let sub of subControls; let i=index" [formGroupName]="i">
+                            <div class="col-4 ">
+                                <input type="text" class="form-control subInputFiled" placeholder="subject name" formControlName="subject">
+                            </div>
+                            <!-- <div class="col-1"> -->
+                            <!-- <input type="number" class="form-control" placeholder="marks" formControlName="marks"> -->
+                            <!-- </div> -->
+                            <div class="col-2 ">
+                                <input type="number" class="form-control marksInputFiled" placeholder="marks" (mouseleave)="getTotalMarks()" formControlName="marks">
+                            </div>
+                        </div> <br>
+                    </div>
+                </div>
+
+                <input type="checkbox" formControlName="terms" required> I agree on terms & conditions.<br><br>
+
+                <button class="btn btn-primary" type="submit" [disabled]="!studentForm.valid">Submit</button>
+
+            </form>
+            <hr>
+            <br>
+
+        </div>
+        <ul *ngFor="let arr of studentArray">
+            <li> {{ arr.enroll }} {{ arr.name }} {{ arr.email }} {{ arr.ph }} {{ arr.dob }} {{ arr.gender }} {{ arr.semester }} {{ arr.grade }}</li>
+        </ul>
+    </div>
+</div>
