@@ -34,7 +34,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
   // subscription:Subscription = this.centralServ.studentData.subscribe(
   //   (obj) => { this.studentData.push(obj);});
 
-  // This function gives filters data according to user given grade
+  // This function gives filters data according to user given Grade
   onFilterGrade(grade){
     if(grade=='All'){
       this.studentData = this.DataArray;
