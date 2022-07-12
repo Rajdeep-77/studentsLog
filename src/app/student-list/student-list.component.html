@@ -18,21 +18,21 @@
         <thead>
             <tr>
                 <th><b class="tableHeader">Enroll<br>
-                  <!-- <input type="number" name="enrollment"  [(ngModel)]="searchByEnroll" placeholder="search enrollment">-->
+                  <input type="number" name="enrollment" placeholder="search enrollment">
                 </b> </th>
 
                 <th (click)="sortTable(1)"><b class="tableHeader">Name<br>
-                  <!-- <input type="text" name="name" [(ngModel)]="searchByName" onkeydown="searchName()" placeholder="search name"> -->
+                  <input type="text" name="name" onkeydown="searchName($event.target.value)" placeholder="search name">
                     </b>
                 </th>
 
                 <th (click)="sortTable(2)"><b class="tableHeader">Email<br>
-                  <!-- <input type="text" name="email" [(ngModel)]="searchByEmail" onkeydown="searchEmail()" placeholder="search email"> -->
+                  <input type="text" name="email" onkeydown="searchEmail()" placeholder="search email">
                     </b>
                 </th>
 
                 <th><b class="tableHeader">Phone<br>
-                  <!-- <input type="number" name="phone" [(ngModel)]="searchByPhone" onkeydown="searchPhone()" placeholder="search phone number"> -->
+                  <input type="number" name="phone" onkeydown="searchPhone()" placeholder="search phone number">
                     </b>
                 </th>
 
