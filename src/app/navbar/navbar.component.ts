@@ -10,10 +10,10 @@ import { CentralServService } from '../central-serv.service';
 export class NavbarComponent implements OnInit {
 
   constructor(private centerServ:CentralServService) {
-   this.subscription = centerServ.studentCount.subscribe( count => { this.studentCount =count; })
    }
 
   ngOnInit(){
+    this.subscription = this.centerServ.studentCount.subscribe( count => { this.studentCount =count; });
   }
   subscription:Subscription;
   studentCount:number=0;

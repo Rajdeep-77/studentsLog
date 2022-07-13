@@ -10,6 +10,9 @@ export class CentralServService {
 
   studentData = new BehaviorSubject<any>([]);
   studentCount = new BehaviorSubject<any>(0);
+  editMode = new BehaviorSubject<any>(false);
+  // editObjCentral = new BehaviorSubject<any>(null);
+  editObj = new BehaviorSubject<any>(null);
 
   // arrayList:Array<any>;
 

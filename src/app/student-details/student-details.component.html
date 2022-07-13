@@ -4,18 +4,24 @@
         <hr>
         <div class="col-xs-12 col-sm-10 col-md-8">
 
+            <!-- form starts -->
             <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
 
+                <!-- name input field  -->
                 <div class="form-group">
                     <label for="name">Name: </label>
-                    <input id="name" formControlName="name" type="text" class="form-control" placeholder="Student name" pattern="[a-z] || [A-z]">
+                    <input id="name" name="name" formControlName="name" type="text" class="form-control" placeholder="Student name">
+                    <span class="help-block validSpan" *ngIf="!studentForm.get('name').valid && studentForm.get('name').touched">Please enter valid name !</span>
                 </div><br>
 
+                <!-- email input field -->
                 <div class="form-group">
                     <label for="email">Email: </label>
                     <input id="email" formControlName="email" type="email" class="form-control" pattern="[A-Za-z0-9]+[^ @]*@[^ @]*\.[A-Za-z0-9]+" placeholder="example@gmail.com">
+                    <span class="help-block validSpan" *ngIf="!studentForm.get('email').valid && studentForm.get('email').touched">Please enter valid email !</span>
                 </div><br>
 
+                <!-- phone number input field  -->
                 <div class="form-group">
                     <label for="phNum">Ph Number: </label>
                     <select class="custom-select dropdownSelector" name="region" (change)="onRegionSelected($event.target.value)">
@@ -23,19 +29,24 @@
                       <option value="usa">Usa (+1): </option>
                     </select>
                     <input id="phNum" formControlName="ph" type="number" min="0" onkeydown="if(['Space'].includes(arguments[0].code)){return false;}" placeholder="phone number" class="form-control">
+                    <span class="help-block validSpan" *ngIf="!studentForm.get('ph').valid && studentForm.get('ph').touched">Please enter valid phone number !</span>
                 </div><br>
 
+                <!-- date of birth input field  -->
                 <div class="form-group">
                     <label for="dob">DoB: </label>
-                    <input id="dob" class="form-control" formControlName="dob" type="date">
+                    <input id="dob" class="form-control" formControlName="dob" type="date" (change)="checkDob()">
+                    <span class="help-block validSpan" *ngIf="!studentForm.get('dob').valid && studentForm.get('dob').touched">Please enter valid Date of Birth !</span>
                 </div><br>
 
+                <!-- gender radio buttons  -->
                 <div>
                     <label>Gender:</label>
                     <input class="radioBtn" type="radio" formControlName="gender" value="male"> male
                     <input class="radioBtn" type="radio" formControlName="gender" value="female"> female
                 </div><br>
 
+                <!-- select semester label  -->
                 <div>
                     <label>Semester: </label>
                     <select class="custom-select dropdownSelector" formControlName="semester">
@@ -44,41 +55,51 @@
                     </select>
                 </div><br>
 
+                <!-- select subject label  -->
                 <div>
                     <label>Subjects: </label>
                     <select class="custom-select dropdownSelector" formControlName="subjectNum" (change)="onAddSubject($event.target.value)">
-                <option value=null >Select subject</option>
-                <option *ngFor="let num of [1,2,3]" value="{{ num }}">{{ num==1 ? 'One':( num==2 ? 'Two':'Three') }}</option>
-            </select>
+                        <option value=null >Select subject</option>
+                        <option *ngFor="let num of [1,2,3]" value="{{ num }}">{{ num==1 ? 'One':( num==2 ? 'Two':'Three') }}</option>
+                    </select>
                 </div><br>
 
                 <div class="row">
+                    <!-- subject array starts -->
                     <div class="col-12" formArrayName="subjectArray">
                         <div class="row form-group" *ngFor="let sub of subControls; let i=index" [formGroupName]="i">
+
+                            <!-- subject field -->
                             <div class="col-4 ">
                                 <input type="text" class="form-control subInputFiled" placeholder="subject name" formControlName="subject">
                             </div>
-                            <!-- <div class="col-1"> -->
-                            <!-- <input type="number" class="form-control" placeholder="marks" formControlName="marks"> -->
-                            <!-- </div> -->
+
+                            <!-- marks field -->
                             <div class="col-2 ">
-                                <input type="number" class="form-control marksInputFiled" placeholder="marks" (mouseleave)="getTotalMarks()" formControlName="marks">
+                                <input type="number" class="form-control marksInputFiled" placeholder="marks" formControlName="marks">
+                                <!-- <input type="number" class="form-control marksInputFiled" placeholder="marks" (mouseout)="getTotalMarks()" formControlName="marks"> -->
                             </div>
                         </div> <br>
                     </div>
+                    <!-- subject array ends -->
                 </div>
 
+                <!-- terms & conditions -->
                 <input type="checkbox" formControlName="terms" required> I agree on terms & conditions.<br><br>
 
-                <button class="btn btn-primary" type="submit" [disabled]="!studentForm.valid">Submit</button>
+                <!-- submit/edit button -->
+                <button class="btn btn-primary" type="submit" [disabled]="!studentForm.valid ">{{ editModeDetail ? 'Edit':'Submit' }}</button>
 
             </form>
+            <!-- form ends -->
             <hr>
             <br>
 
         </div>
-        <ul *ngFor="let arr of studentArray">
+
+        <!-- <ul *ngFor="let arr of studentArray">
             <li> {{ arr.enroll }} {{ arr.name }} {{ arr.email }} {{ arr.ph }} {{ arr.dob }} {{ arr.gender }} {{ arr.semester }} {{ arr.grade }}</li>
-        </ul>
+        </ul> -->
+
     </div>
 </div>

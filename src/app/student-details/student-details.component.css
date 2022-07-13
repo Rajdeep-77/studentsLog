@@ -25,3 +25,7 @@ textarea.ng-invalid.ng-touched {
     margin-left: 40px;
     margin-top: 10px;
 }
+
+.validSpan {
+    color: red;
+}

@@ -7,23 +7,27 @@ import { StudentDetailsComponent } from './student-details/student-details.compo
 import { StudentListComponent } from './student-list/student-list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterPipe } from './filter.pipe';
-import { FilterPipePipe } from './filter-pipe.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentDetailsComponent,
     StudentListComponent,
-    NavbarComponent,
-    FilterPipe,
-    FilterPipePipe
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Ng2SearchPipeModule
+    // Ng2OrderModule,
+    // NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

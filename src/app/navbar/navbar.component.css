@@ -3,3 +3,8 @@
     cursor: pointer;
     margin-left: 20px;
 }
+
+.active {
+    background-color: cadetblue;
+    border-radius: 5px;
+}
