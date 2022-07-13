@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 
+export interface dataObject{
+  enroll: number,
+  name: string,
+  email: string,
+  ph: number,
+  dob: string,
+  gender: string,
+  semester: number,
+  subjectNum:number,
+  grade: string,
+  subject: Array<object>
+}
+
 @Injectable({
   providedIn: 'root'
 })

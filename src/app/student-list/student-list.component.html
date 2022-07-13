@@ -22,7 +22,7 @@
 
     <!-- table starts  -->
     <table class="storeTable table" id="myTable">
-        
+
         <!-- table header  -->
         <thead>
             <tr>
@@ -90,12 +90,12 @@
                 <td>{{ el.semester }}</td>
                 <td>{{ el.grade }}</td>
                 <td>
-                    <button id="editButton" class="btn btn-danger tableButton" (click)="onEdit(i, el)">Edit</button>
+                    <button id="editButton" class="btn btn-danger tableButton" (click)="onEdit( el)">Edit</button>
                     <button id="deleteButton" class="btn btn-danger tableButton" (click)="onDelete(i)">Delete</button>
                 </td>
             </tr>
         </tbody>
-        
+
 
     </table>
     <!-- table ends  -->

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CentralServService } from '../central-serv.service';
+import { CentralServService, dataObject } from '../central-serv.service';
 
 @Component({
   selector: 'app-student-list',
@@ -34,8 +34,8 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
   searchBy:any;
 
-  studentData:Array<any>=[];
-  DataArray:Array<any>=[];
+  studentData:Array<dataObject>=[];
+  DataArray:Array<dataObject>=[];
   arrayOfNum=[true,true,true,true];
 
   // This function gives filters data according to user given Grade
@@ -51,7 +51,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
 
   // This function deletes the data
-  onEdit(dataIndex, objectToEdit){
+  onEdit( objectToEdit){
     // console.log(dataIndex);
       this.editModeList=true;
         // this.centralServ.editMode.next(this.editModeList);

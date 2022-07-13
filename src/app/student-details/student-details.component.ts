@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Route, Router } from '@angular/router';
-import { CentralServService } from '../central-serv.service';
+import { CentralServService, dataObject } from '../central-serv.service';
 import { StudentListComponent } from '../student-list/student-list.component';
 
 @Component({
@@ -15,13 +15,16 @@ export class StudentDetailsComponent implements OnInit {
   constructor( private formBuilder:FormBuilder,
                private centralServ:CentralServService ,
                private router:Router) { }
+
   ngOnInit() {
+
     this.studentArray = this.centralServ.getDetailList();
 
     // this.centralServ.editObjCentral.subscribe( index => { this.editObjIndex = index;});
     this.centralServ.editMode.subscribe((ed) => { this.editModeDetail= ed;});
-    this.centralServ.editObj.subscribe( obj => { this.editObj = obj;});
-           this.editObjIndex = this.studentArray.indexOf(this.editObj);
+    this.centralServ.editObj.subscribe( obj => { this.editObj = obj; this.editObjEnroll = obj.enroll;});
+
+    this.editObjIndex = this.studentArray.indexOf(this.editObj);
     if(this.editModeDetail){
       // this.centralServ.editObj.subscribe( obj => { this.editObj = obj;} );
 
@@ -32,29 +35,36 @@ export class StudentDetailsComponent implements OnInit {
           dob:this.editObj.dob,
           gender: this.editObj.gender,
           semester:this.editObj.semester,
+          subjectNum:this.editObj.subjectNum,
           subjectArray:this.editObj.subject,
         } );
-      //  this.studentForm.get('subjectArray').patchValue([
-      //   { subject: this.editObj.subject.value[0]subject ,  marks: this.editObj.subject.value[0]marks},
-      //   { subject: this.editObj.subject.value[1]subject,   marks: this.editObj.subject.value[1]marks},
-      //   { subject: this.editObj.subject.value[2]subject,   marks: this.editObj.subject.value[2]marks}
-      // ]);
+        // console.log("- | -"+JSON.stringify(this.editObj.subject));
+
+        this.divider=this.editObj.subjectNum;
+
+        for( let i=0; i <= this.editObj.subjectNum-1; i++){
+          (<FormArray>this.studentForm.get('subjectArray')).push(
+           this.formBuilder.group({
+            'subject' : new FormControl(this.editObj.subject[i]['subject'], [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+            'marks' : new FormControl(this.editObj.subject[i]['marks'], [Validators.required, Validators.min(0), Validators.max(100)])
+           })
+           )
+        }
        this.editObj=null;
     }
-    // this.editObjIndex=this.studentArray.indexOf(this.editObj);
+
 
 
   }
 
-  studentArray:Array<any>=[];
-  // studentObj:object;
+  studentArray:Array<dataObject>=[];
 
   grade:string;
   divider:number;
-  // total:number;
   editModeDetail:boolean=false;
   editObjIndex:number;
-  editObj:any;
+  editObj:dataObject;
+  editObjEnroll:number;
 
 
   studentForm = new FormGroup({
@@ -70,12 +80,6 @@ export class StudentDetailsComponent implements OnInit {
     'subjectArray': new FormArray([])
   });
 
-  //This function trims the value of name
-  // trimName(){
-  //   if(this.studentForm.get('name').value.trim()==''){
-  //     this.studentForm.patchValue({name:null});
-  //   }
-  // }
 
   // This function sets region for the phone number input field
   onRegionSelected(region){
@@ -120,12 +124,6 @@ export class StudentDetailsComponent implements OnInit {
     return (<FormArray>this.studentForm.get('subjectArray')).controls;
   }
 
-  // This function gets total marks
-  // getTotalMarks(){
-
-  //  console.log( "tot "+this.total);
-
-  // }
 
   // This function submits the form data
   onSubmit(){
@@ -133,7 +131,6 @@ export class StudentDetailsComponent implements OnInit {
     let total:number;
 
     let arr= this.studentForm.get('subjectArray') as FormArray;
-    //  console.log(this.studentForm.get('subjectArray').value);
 
       if(this.divider==1){
         total = (arr.value[0].marks)/this.divider;
@@ -160,21 +157,33 @@ export class StudentDetailsComponent implements OnInit {
           this.grade='F';
      }
 
-    let studentObj={
-      enroll: Math.floor((Math.random())*1000000000000),
-      name: this.studentForm.get('name').value,
-      email: this.studentForm.get('email').value,
-      ph: this.studentForm.get('ph').value,
-      dob: this.studentForm.get('dob').value,
-      gender: this.studentForm.get('gender').value,
-      semester: this.studentForm.get('semester').value,
-      grade: this.grade,
-      subject:this.studentForm.get('subjectArray').value
-    }
-    console.log("--"+this.studentForm.get('subjectArray').value);
-    console.log("--"+this.studentForm.get('subjectArray'));
+    // let studentObj={
+    //   enroll: Math.floor((Math.random())*1000000000000),
+    //   name: this.studentForm.get('name').value,
+    //   email: this.studentForm.get('email').value,
+    //   ph: this.studentForm.get('ph').value,
+    //   dob: this.studentForm.get('dob').value,
+    //   gender: this.studentForm.get('gender').value,
+    //   semester: this.studentForm.get('semester').value,
+    //   subjectNum: this.studentForm.get('subjectNum').value,
+    //   grade: this.grade,
+    //   subject:this.studentForm.get('subjectArray').value
+    // }
 
     if(!this.editModeDetail){  //Edit mode off
+
+      let studentObj={
+        enroll: Math.floor((Math.random())*1000000000000),
+        name: this.studentForm.get('name').value,
+        email: this.studentForm.get('email').value,
+        ph: this.studentForm.get('ph').value,
+        dob: this.studentForm.get('dob').value,
+        gender: this.studentForm.get('gender').value,
+        semester: this.studentForm.get('semester').value,
+        subjectNum: this.studentForm.get('subjectNum').value,
+        grade: this.grade,
+        subject:this.studentForm.get('subjectArray').value
+      }
 
       this.studentArray.push(studentObj);
         this.centralServ.studentData.next(this.studentArray);
@@ -183,7 +192,20 @@ export class StudentDetailsComponent implements OnInit {
     }
 
     else{                      //Edit mode on
-      // this.studentArray.push(studentObj);
+
+      let studentObj={
+        enroll: this.editObjEnroll,
+        name: this.studentForm.get('name').value,
+        email: this.studentForm.get('email').value,
+        ph: this.studentForm.get('ph').value,
+        dob: this.studentForm.get('dob').value,
+        gender: this.studentForm.get('gender').value,
+        semester: this.studentForm.get('semester').value,
+        subjectNum: this.studentForm.get('subjectNum').value,
+        grade: this.grade,
+        subject:this.studentForm.get('subjectArray').value
+      }
+
       this.studentArray[this.editObjIndex]=studentObj;
         this.centralServ.studentData.next(this.studentArray);
       this.studentForm.reset();
@@ -192,9 +214,6 @@ export class StudentDetailsComponent implements OnInit {
 
     }
 
-
-
-    // console.log(this.grade)
     this.router.navigate(['listPage']);
     this.centralServ.studentCount.next(this.studentArray.length);
 
