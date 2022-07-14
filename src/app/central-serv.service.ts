@@ -5,6 +5,7 @@ export interface dataObject{
   enroll: number,
   name: string,
   email: string,
+  region: string,
   ph: number,
   dob: string,
   gender: string,

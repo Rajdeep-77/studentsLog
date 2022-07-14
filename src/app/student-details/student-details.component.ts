@@ -22,7 +22,7 @@ export class StudentDetailsComponent implements OnInit {
 
     // this.centralServ.editObjCentral.subscribe( index => { this.editObjIndex = index;});
     this.centralServ.editMode.subscribe((ed) => { this.editModeDetail= ed;});
-    this.centralServ.editObj.subscribe( obj => { this.editObj = obj; this.editObjEnroll = obj.enroll;});
+    this.centralServ.editObj.subscribe( obj => { this.editObj = obj;});
 
     this.editObjIndex = this.studentArray.indexOf(this.editObj);
     if(this.editModeDetail){
@@ -31,26 +31,33 @@ export class StudentDetailsComponent implements OnInit {
       this.studentForm.patchValue(
         { name: this.editObj.name ,
           email:this.editObj.email,
+          region:this.editObj.region,
           ph:this.editObj.ph,
           dob:this.editObj.dob,
           gender: this.editObj.gender,
           semester:this.editObj.semester,
           subjectNum:this.editObj.subjectNum,
           subjectArray:this.editObj.subject,
+          terms: true
         } );
         // console.log("- | -"+JSON.stringify(this.editObj.subject));
-
-        this.divider=this.editObj.subjectNum;
+        if(this.editObj.region=="india"){
+          this.studentForm.get('ph').setValidators([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]);
+        }
+        else if(this.editObj.region=="usa"){
+          this.studentForm.get('ph').setValidators([Validators.required, Validators.pattern("^((\\+1-?)|0)?[0-9]{12}$")]);
+        }
+        // this.divider=this.editObj.subjectNum;
 
         for( let i=0; i <= this.editObj.subjectNum-1; i++){
           (<FormArray>this.studentForm.get('subjectArray')).push(
            this.formBuilder.group({
-            'subject' : new FormControl(this.editObj.subject[i]['subject'], [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+            'subject' : new FormControl(this.editObj.subject[i]['subject'], [Validators.required, Validators.pattern("^[a-zA-Z0-9]+( [a-zA-Z0-9_]+)*$")]),
             'marks' : new FormControl(this.editObj.subject[i]['marks'], [Validators.required, Validators.min(0), Validators.max(100)])
            })
            )
         }
-       this.editObj=null;
+
     }
 
 
@@ -60,16 +67,17 @@ export class StudentDetailsComponent implements OnInit {
   studentArray:Array<dataObject>=[];
 
   grade:string;
-  divider:number;
+  // divider:number;
+  regionSelected:string;
   editModeDetail:boolean=false;
   editObjIndex:number;
   editObj:dataObject;
-  editObjEnroll:number;
 
 
   studentForm = new FormGroup({
-    'name' : new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
-    'email' : new FormControl(null, [Validators.required,Validators.email]),
+    'name' : new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z]+( [a-zA-Z0-9_]+)*$"), Validators.maxLength(40) ]),
+    'email' : new FormControl(null, [Validators.required,Validators.email, Validators.maxLength(40)]),
+    'region' : new FormControl("india", Validators.required),
     'ph' : new FormControl(null,  [Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
     'dob' : new FormControl(null, [ Validators.required ]),
     'gender' : new FormControl(null, Validators.required),
@@ -82,11 +90,12 @@ export class StudentDetailsComponent implements OnInit {
 
 
   // This function sets region for the phone number input field
-  onRegionSelected(region){
-    if(region=="india"){
+  onRegionSelected(reg){
+    this.regionSelected=this.studentForm.get('region').value;
+    if(reg=="india"){
       this.studentForm.get('ph').setValidators([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]);
     }
-    else if(region=="usa"){
+    else if(reg=="usa"){
       this.studentForm.get('ph').setValidators([Validators.required, Validators.pattern("^((\\+1-?)|0)?[0-9]{12}$")]);
     }
   }
@@ -105,14 +114,13 @@ export class StudentDetailsComponent implements OnInit {
   // This function adds the subject fields( subject name & marks)
   onAddSubject(val){
 
-
   //  const control = new FormControl(null, Validators.required);
-   this.divider=val;
+  //  this.divider=val;
    (<FormArray>this.studentForm.get('subjectArray')).clear();
    for(let i=0; i<=val-1; i++){
     (<FormArray>this.studentForm.get('subjectArray')).push(
       this.formBuilder.group({
-       'subject' : new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+       'subject' : new FormControl(null, [Validators.required, Validators.pattern("^[a-zA-Z0-9]+( [a-zA-Z0-9_]+)*$")]),
        'marks' : new FormControl(null, [Validators.required, Validators.min(0), Validators.max(100)])
       })
     );
@@ -128,19 +136,23 @@ export class StudentDetailsComponent implements OnInit {
   // This function submits the form data
   onSubmit(){
 
-    let total:number;
+    let total:number=0;
 
     let arr= this.studentForm.get('subjectArray') as FormArray;
 
-      if(this.divider==1){
-        total = (arr.value[0].marks)/this.divider;
-      }
-      else if(this.divider==2){
-        total = (arr.value[0].marks + arr.value[1].marks)/this.divider;
-      }
-      else{
-        total = (arr.value[0].marks + arr.value[1].marks + arr.value[2].marks)/this.divider;
-      }
+    for(let i=0; i<(<FormArray>this.studentForm.get('subjectArray')).length; i++){
+      total = (total + arr.value[i].marks)
+    }total= total/(<FormArray>this.studentForm.get('subjectArray')).length;
+
+      // if(this.divider==1){
+      //   total = (arr.value[0].marks)/this.divider;
+      // }
+      // else if(this.divider==2){
+      //   total = (arr.value[0].marks + arr.value[1].marks)/this.divider;
+      // }
+      // else{
+      //   total = (arr.value[0].marks + arr.value[1].marks + arr.value[2].marks)/this.divider;
+      // }
 
     switch(true){
       case ( total >=80 ):
@@ -176,6 +188,7 @@ export class StudentDetailsComponent implements OnInit {
         enroll: Math.floor((Math.random())*1000000000000),
         name: this.studentForm.get('name').value,
         email: this.studentForm.get('email').value,
+        region: this.studentForm.get('region').value,
         ph: this.studentForm.get('ph').value,
         dob: this.studentForm.get('dob').value,
         gender: this.studentForm.get('gender').value,
@@ -184,7 +197,8 @@ export class StudentDetailsComponent implements OnInit {
         grade: this.grade,
         subject:this.studentForm.get('subjectArray').value
       }
-
+      console.log(this.regionSelected)
+      console.log(studentObj.region)
       this.studentArray.push(studentObj);
         this.centralServ.studentData.next(this.studentArray);
       this.studentForm.reset();
@@ -194,9 +208,10 @@ export class StudentDetailsComponent implements OnInit {
     else{                      //Edit mode on
 
       let studentObj={
-        enroll: this.editObjEnroll,
+        enroll: this.editObj.enroll,
         name: this.studentForm.get('name').value,
         email: this.studentForm.get('email').value,
+        region: this.studentForm.get('region').value,
         ph: this.studentForm.get('ph').value,
         dob: this.studentForm.get('dob').value,
         gender: this.studentForm.get('gender').value,

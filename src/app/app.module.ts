@@ -8,6 +8,9 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { CustomSearchPipe } from './custom-search.pipe';
+import { OrderAscDescPipe } from './order-asc-desc.pipe';
+import { ShortParamsDirectiveDirective } from './short-params-directive.directive';
 
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
 // import { Ng2SearchPipeModule } from 'ng2-search-filter';
@@ -18,7 +21,10 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     AppComponent,
     StudentDetailsComponent,
     StudentListComponent,
-    NavbarComponent
+    NavbarComponent,
+    CustomSearchPipe,
+    OrderAscDescPipe,
+    ShortParamsDirectiveDirective
   ],
   imports: [
     BrowserModule,

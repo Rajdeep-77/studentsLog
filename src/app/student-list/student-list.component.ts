@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CentralServService, dataObject } from '../central-serv.service';
+import { OrderAscDescPipe } from '../order-asc-desc.pipe';
 
 @Component({
   selector: 'app-student-list',
@@ -68,6 +69,19 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
   }
 
+  direction:string="asc";
+column:string="first";
+type:string="string";
+
+  setSortParams(param, dir){
+    this.direction=param.dir;
+    this.column=param.col;
+    this.type=param.typ;
+
+    const customPipe = new OrderAscDescPipe();
+    this.studentData = customPipe.transform(this.studentData,dir,param);
+    }
+
    // this function sorts the table rows based on ascending order of name column
    sortTable(n) {
     if(n==1){
@@ -120,6 +134,24 @@ export class StudentListComponent implements OnInit, OnDestroy {
       }
     }
   }
-}
+  }
+
+  // sortTable( objProp ){
+
+    // objProp == 'name' ? (this.isDesc = !this.isDesc,direction = this.isDesc ? 1 : -1) : (property == 'email' ? (this.Email = !this.Email, direction = this.Email ? 1 : -1) :  (property == 'semester' ? (this.Semester = !this.Semester, direction = this.Semester ? 1 : -1) : (this.Grade = !this.Grade, direction = this.Grade ? 1 : -1)));
+
+    // let sortBy = (arr, prop, dir) => [...arr].sort((a,b) => a[prop].localeCompare(b[prop]) * dir);
+
+    // this.displayArr.sort(function (a, b) {
+    //   if (a[property] < b[property]) {
+    //     return -1 * direction;
+    //   }
+    //   else if (a[property] > b[property]) {
+    //     return 1 * direction;
+    //   }
+    //   else {
+    //     return 0;
+    //   }
+  // }
 
 }
