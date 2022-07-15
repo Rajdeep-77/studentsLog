@@ -92,6 +92,7 @@ export class StudentDetailsComponent implements OnInit {
   // This function sets region for the phone number input field
   onRegionSelected(reg){
     this.regionSelected=this.studentForm.get('region').value;
+    this.studentForm.patchValue({ph:null});
     if(reg=="india"){
       this.studentForm.get('ph').setValidators([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]);
     }
@@ -114,8 +115,6 @@ export class StudentDetailsComponent implements OnInit {
   // This function adds the subject fields( subject name & marks)
   onAddSubject(val){
 
-  //  const control = new FormControl(null, Validators.required);
-  //  this.divider=val;
    (<FormArray>this.studentForm.get('subjectArray')).clear();
    for(let i=0; i<=val-1; i++){
     (<FormArray>this.studentForm.get('subjectArray')).push(
@@ -125,6 +124,7 @@ export class StudentDetailsComponent implements OnInit {
       })
     );
    }
+
   }
 
   // getter
@@ -168,19 +168,6 @@ export class StudentDetailsComponent implements OnInit {
       default:
           this.grade='F';
      }
-
-    // let studentObj={
-    //   enroll: Math.floor((Math.random())*1000000000000),
-    //   name: this.studentForm.get('name').value,
-    //   email: this.studentForm.get('email').value,
-    //   ph: this.studentForm.get('ph').value,
-    //   dob: this.studentForm.get('dob').value,
-    //   gender: this.studentForm.get('gender').value,
-    //   semester: this.studentForm.get('semester').value,
-    //   subjectNum: this.studentForm.get('subjectNum').value,
-    //   grade: this.grade,
-    //   subject:this.studentForm.get('subjectArray').value
-    // }
 
     if(!this.editModeDetail){  //Edit mode off
 
@@ -232,8 +219,6 @@ export class StudentDetailsComponent implements OnInit {
     this.router.navigate(['listPage']);
     this.centralServ.studentCount.next(this.studentArray.length);
 
-
-    // console.log(this.studentForm.controls['subjectArray'].controls['marks'].value);
   }
 
 

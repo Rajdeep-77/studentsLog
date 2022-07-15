@@ -70,71 +70,83 @@ export class StudentListComponent implements OnInit, OnDestroy {
   }
 
   direction:string="asc";
-column:string="first";
-type:string="string";
+  column:string="first";
+  type:string="string";
 
   setSortParams(param, dir){
     this.direction=param.dir;
     this.column=param.col;
     this.type=param.typ;
 
+    switch(true){
+      case (param=='name'):
+        this.arrayOfNum[0]=!this.arrayOfNum[0];break;
+      case (param=='email'):
+        this.arrayOfNum[1]=!this.arrayOfNum[1];break;
+      case (param=='semester'):
+        this.arrayOfNum[2]=!this.arrayOfNum[2];break;
+      case (param=='grade'):
+        this.arrayOfNum[3]=!this.arrayOfNum[3];break;
+    }
+
+
     const customPipe = new OrderAscDescPipe();
     this.studentData = customPipe.transform(this.studentData,dir,param);
     }
 
    // this function sorts the table rows based on ascending order of name column
-   sortTable(n) {
-    if(n==1){
-      this.arrayOfNum[0]=!this.arrayOfNum[0];
-    }
-    else if(n==2){
-      this.arrayOfNum[1]=!this.arrayOfNum[1];
-    }
-    else if(n==6){
-      this.arrayOfNum[2]=!this.arrayOfNum[2];
-    }
-    else if(n==7){
-      this.arrayOfNum[3]=!this.arrayOfNum[3];
-    }
+  //  sortTable(n) {
+  //   if(n==1){
+  //     this.arrayOfNum[0]=!this.arrayOfNum[0];
+  //   }
+  //   else if(n==2){
+  //     this.arrayOfNum[1]=!this.arrayOfNum[1];
+  //   }
+  //   else if(n==6){
+  //     this.arrayOfNum[2]=!this.arrayOfNum[2];
+  //   }
+  //   else if(n==7){
+  //     this.arrayOfNum[3]=!this.arrayOfNum[3];
+  //   }
 
 
-  var  rows, switching, tempVarX, tempVarY, shouldSwitch:boolean, switchcount:number = 0;
-  switching = true;
-  this.tempVarDir = "asc";
-  while (switching) {
-    switching = false;
-    rows = (<HTMLTableElement>document.getElementById("myTable")).rows;
-    for (var i = 1; i < (rows.length - 1); i++) {
-      shouldSwitch = false;
-      tempVarX = rows[i].getElementsByTagName("TD")[n];
-      tempVarY = rows[i + 1].getElementsByTagName("TD")[n];
-      if (this.tempVarDir == "asc") {
+  // var  rows, switching, tempVarX, tempVarY, shouldSwitch:boolean, switchcount:number = 0;
+  // switching = true;
+  // this.tempVarDir = "asc";
+  // while (switching) {
+  //   switching = false;
+  //   rows = (<HTMLTableElement>document.getElementById("myTable")).rows;
+  //   for (var i = 1; i < (rows.length - 1); i++) {
+  //     shouldSwitch = false;
+  //     tempVarX = rows[i].getElementsByTagName("TD")[n];
+  //     tempVarY = rows[i + 1].getElementsByTagName("TD")[n];
+  //     if (this.tempVarDir == "asc") {
 
-        if (tempVarX.innerHTML.toLowerCase() > tempVarY.innerHTML.toLowerCase()) {
-          shouldSwitch= true;
-          break;
-        }
-      } else if (this.tempVarDir == "desc") {
+  //       if (tempVarX.innerHTML.toLowerCase() > tempVarY.innerHTML.toLowerCase()) {
+  //         shouldSwitch= true;
+  //         break;
+  //       }
+  //     } else if (this.tempVarDir == "desc") {
 
-        if (tempVarX.innerHTML.toLowerCase() < tempVarY.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      switchcount ++;
-    }
-    else {
-      if (switchcount == 0 && this.tempVarDir == "asc") {
-        this.tempVarDir = "desc";
-        switching = true;
-      }
-    }
-  }
-  }
+  //       if (tempVarX.innerHTML.toLowerCase() < tempVarY.innerHTML.toLowerCase()) {
+  //         shouldSwitch = true;
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   if (shouldSwitch) {
+  //     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+  //     switching = true;
+  //     switchcount ++;
+  //   }
+  //   else {
+  //     if (switchcount == 0 && this.tempVarDir == "asc") {
+  //       this.tempVarDir = "desc";
+  //       switching = true;
+  //     }
+  //   }
+  // }
+  // }
 
   // sortTable( objProp ){
 
